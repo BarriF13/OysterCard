@@ -14,4 +14,8 @@ end
 it 'I need to top up' do
   expect(subject).to respond_to(:top_up).with(1).argument
 end
+it ' It can top up the balance' do
+  expect {subject.top_up 1}.to change{subject.balance }.by 1
+end
+
 end
