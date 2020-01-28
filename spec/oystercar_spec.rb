@@ -60,4 +60,12 @@ it "can touch out" do
   subject.touch_out
   expect(subject).not_to be_in_journey
 end
+# In order to pay for my journey
+# As a customer
+# When my journey is complete, I need the correct amount deducted from my card
+it "can deduct a fare when touch out" do
+  subject.top_up(OysterCard::MIN_BALANCE)
+  subject.touch_in
+  expect { subject.touch_out }.to change{ subject.balance }.by(-OysterCard::MIN_CHARGE)
+end
 end
