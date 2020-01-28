@@ -27,6 +27,14 @@ it 'Maximum balance is exceeded'do
 end
 # In order to pay for my journey
 # As a customer
+# I need to have the minimum amount (£1) for a single journey.
+it 'Minimum balance is not met'do
+  minimum_balance = OysterCard::MIN_BALANCE
+  #subject.touch_in
+  expect{ subject.touch_in }.to raise_error("required #{minimum_balance} for your journey")
+end
+# In order to pay for my journey
+# As a customer
 # I need my fare deducted from my card
 it 'fare is deducted from my card' do
   expect(subject).to respond_to(:deduct).with(1).argument
@@ -42,10 +50,12 @@ it "is initially not in a journey" do
   expect(subject).not_to be_in_journey
 end
 it "can touch in" do
+  subject.top_up(OysterCard::MIN_BALANCE)
   subject.touch_in
   expect(subject).to be_in_journey
 end
 it "can touch out" do
+  subject.top_up(OysterCard::MIN_BALANCE)
   subject.touch_in
   subject.touch_out
   expect(subject).not_to be_in_journey
