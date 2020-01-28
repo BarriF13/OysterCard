@@ -12,7 +12,7 @@ class OysterCard
     @fare = 0
     @card_in_journey = false
     @entry_station = nil
-    @saved_journeys = {}
+    @saved_journeys = []
     @exit_station = nil
   end
 
@@ -30,12 +30,14 @@ class OysterCard
     fail "required #{MIN_BALANCE} for your journey" if @balance < MIN_BALANCE
     @card_in_journey = true
     @entry_station = station
+    @saved_journeys.push(@entry_station)
   end
 
   def touch_out(station)
     @card_in_journey = false
     deduct(MIN_CHARGE)
     @exit_station = station
+    @saved_journeys.push(@exit_station)
   end
 
   def deduct(fare)

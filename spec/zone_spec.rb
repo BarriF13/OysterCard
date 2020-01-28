@@ -18,4 +18,9 @@ it 'stores the entry station' do
   subject.touch_out("mansion house")
   expect(subject.exit_station).to eq "mansion house"
 end
+
+it 'stores the entry and exit station in a hash' do
+  expect(subject).to respond_to(:saved_journeys)
+  subject.touch_out("mansion_house")
+end
 end
