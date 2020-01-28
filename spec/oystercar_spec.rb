@@ -16,14 +16,23 @@ it 'I need to top up' do
 end
 it ' It can top up the balance' do
   expect {subject.top_up 1}.to change{subject.balance }.by 1
-
 end
 # In order to protect my money from theft or loss
 # As a customer
 # I want a maximum limit (of £90) on my card
 it 'Maximum balance is exceeded'do
   maximum_balance = OysterCard::MAX_TOP
-  subject.top_up(maximum_balance)
-  expect{ subject.top_up 1}.to raise_error("Maximum balance is exceeded")
+  subject.top_up maximum_balance
+  expect{ subject.top_up 1}.to raise_error("Maximum balance of #{maximum_balance} exceeded")
+end
+# In order to pay for my journey
+# As a customer
+# I need my fare deducted from my card
+it 'fare is deducted from my card' do
+  expect(subject).to respond_to(:deduct).with(1).argument
+end
+it ' It can deduct the fare' do
+  subject.top_up(20)
+  expect {subject.deduct 1}.to change{subject.balance }.by -1
 end
 end
