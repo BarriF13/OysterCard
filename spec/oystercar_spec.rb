@@ -1,8 +1,16 @@
 # first test
 require "Oyster_card"
-#step 11
+
 #step 4
 describe Oystercard do
+  #step 114
+  let(:station){ double :station }
+
+it 'stores the entry station' do
+  subject.top_up(10)
+  subject.touch_in(station)
+  expect(subject.entry_station).to eq station
+end
   it "has money"do
     expect(subject.balance).to eq 0
   end
@@ -31,22 +39,22 @@ describe Oystercard do
     end
     it "can touch in" do
       subject.top_up(10)
-      expect(subject.touch_in).to eq true
+      expect(subject.touch_in(station)).to eq true
     end
     it "can touch out" do
       subject.top_up(10)
-      subject.touch_in
-      expect(subject.touch_out).to eq false
+      subject.touch_in(station)
+      expect(subject.touch_out(station)).to eq false
     end
     # step 9 -I need to have the minimum amount (£1) for a single journey.
     it "won't touch in if it's below minimum fare" do
-      expect{ subject.touch_in }.to raise_error "Insufficient balance to touch in"
+      expect{ subject.touch_in(station) }.to raise_error "Insufficient balance to touch in"
     end
     #When my journey is complete, I need the correct amount deducted from my card
     it "will charge the minimum fare" do
       subject.top_up(10)
-      subject.touch_in
-      expect { subject.touch_out}.to change{subject.balance}.by(-Oystercard::MINIMUM_CHARGE)
+      subject.touch_in(station)
+      expect { subject.touch_out(station)}.to change{subject.balance}.by(-Oystercard::MINIMUM_CHARGE)
     end
   end
 
