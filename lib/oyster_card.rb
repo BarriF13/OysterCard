@@ -25,15 +25,15 @@ attr_reader :balance, :entry_station, :exit_station
     @balance -= amount
   end
 
-  def touch_in(station)
+  def touch_in(entry_station)
         fail "Insufficient balance to touch in" if @balance < MINIMUM_BALANCE
-    @entry_station = station
+    @entry_station = entry_station
     @card_in_journey = true
   end
 
-  def touch_out(station)
+  def touch_out(exit_station)
     deduct(MINIMUM_CHARGE)
-    @exit_station = station
+    @exit_station = exit_station
     @card_in_journey =false
   end
 
