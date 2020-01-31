@@ -1,5 +1,6 @@
 # first test
 require "Oyster_card"
+#step 11
 #step 4
 describe Oystercard do
   it "has money"do
@@ -24,6 +25,29 @@ describe Oystercard do
       subject.top_up(20)
       expect { subject.deduct 3}.to change{ subject.balance}.by -3
     end
-    #I need to touch in and out.
+    #I need to touch in and out. or we a re in journey
+    it 'is initially not in a journey' do
+      expect(subject.in_journey?).to eq false
+    end
+    it "can touch in" do
+      subject.top_up(10)
+      expect(subject.touch_in).to eq true
+    end
+    it "can touch out" do
+      subject.top_up(10)
+      subject.touch_in
+      expect(subject.touch_out).to eq false
+    end
+    # step 9 -I need to have the minimum amount (£1) for a single journey.
+    it "won't touch in if it's below minimum fare" do
+      expect{ subject.touch_in }.to raise_error "Insufficient balance to touch in"
+    end
+    #When my journey is complete, I need the correct amount deducted from my card
+    it "will charge the minimum fare" do
+      subject.top_up(10)
+      subject.touch_in
+      expect { subject.touch_out}.to change{subject.balance}.by(-Oystercard::MINIMUM_CHARGE)
+    end
   end
+
 end
